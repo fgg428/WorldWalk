@@ -67,8 +67,34 @@ public class groupController {
 		}else {
 			groupDescribe = new String(groupDescribe.getBytes("ISO8859-1"), "UTF-8"); 
 		}
-		String path="E:/eclipse workface/WorldWalk/WebContent/groupImage/";
-		jsonMessage jm=dao.createGroupDao(userID,path,file,groupName,groupDescribe);
+		String groupHXID=req.getParameter("groupHXID");
+		jsonMessage jm=dao.createGroupDao(userID,file,groupName,groupDescribe,groupHXID);
+		deal(jm,rep);
+    }
+	
+	@RequestMapping("/modifyGroupInform") //修该群公告
+    public void modifyGroupInform(HttpServletRequest req,HttpServletResponse rep) throws Exception
+    {
+		String groupID=req.getParameter("groupID");
+		String groupAnnouncement=req.getParameter("groupAnnouncement");
+		if((groupAnnouncement==null)|| (groupAnnouncement.equalsIgnoreCase(""))){			
+		}else {
+			groupAnnouncement = new String(groupAnnouncement.getBytes("ISO8859-1"), "UTF-8"); 
+		}
+		jsonMessage jm=dao.modifyGroupInformDao(groupID,groupAnnouncement);
+		deal(jm,rep);
+    }
+	
+	@RequestMapping("/modifyGroupDescribe") //修改群描述
+    public void modifyGroupDescript(HttpServletRequest req,HttpServletResponse rep) throws Exception
+    {
+		String groupID=req.getParameter("groupID");
+		String groupDescribe=req.getParameter("groupDescribe");
+		if((groupDescribe==null)|| (groupDescribe.equalsIgnoreCase(""))){			
+		}else {
+			groupDescribe = new String(groupDescribe.getBytes("ISO8859-1"), "UTF-8"); 
+		}
+		jsonMessage jm=dao.modifyGroupDescribeDao(groupID,groupDescribe);
 		deal(jm,rep);
     }
 	
@@ -76,6 +102,13 @@ public class groupController {
 	public void searchGroup(HttpServletRequest req,HttpServletResponse rep)throws Exception{
 		String keyword=req.getParameter("keyword");
 		jsonMessage jm=dao.searchGroupDao(keyword);
+		deal(jm,rep);
+	}
+	
+	@RequestMapping("/obtainSearchGroupInfo") //获取搜索群组的信息
+	public void obtainSearchGroupInfo(HttpServletRequest req,HttpServletResponse rep)throws Exception{
+		String groupID=req.getParameter("groupID");
+		jsonMessage jm=dao.obtainSearchGroupInfoDao(groupID);
 		deal(jm,rep);
 	}
 	
@@ -94,12 +127,29 @@ public class groupController {
 		deal(jm,rep);
 	}
 	
+	@RequestMapping("/addUser") //群主添加用户加入群请求
+	public void addUser(HttpServletRequest req,HttpServletResponse rep)throws Exception{
+		String userID=req.getParameter("userID");
+		String groupID=req.getParameter("groupID");
+		jsonMessage jm=dao.addUserDao(userID, groupID);
+		deal(jm,rep);
+	}
+	
 	@RequestMapping("/auditingAddGroup") //审核入群申请
 	public void auditingAddGroup(HttpServletRequest req,HttpServletResponse rep)throws Exception{
 		String userID=req.getParameter("userID");
 		String groupID=req.getParameter("groupID");
 		String status=req.getParameter("status");
 		jsonMessage jm=dao.auditingAddGroupDao(userID,groupID,status);
+		deal(jm,rep);
+	}
+	
+	@RequestMapping("/userAuditingAddGroup") //用户审核入群申请
+	public void userAuditingAddGroup(HttpServletRequest req,HttpServletResponse rep)throws Exception{
+		String userID=req.getParameter("userID");
+		String groupID=req.getParameter("groupID");
+		String status=req.getParameter("status");
+		jsonMessage jm=dao.userAuditingAddGroupDao(userID,groupID,status);
 		deal(jm,rep);
 	}
 	
@@ -127,6 +177,21 @@ public class groupController {
 		deal(jm,rep);
 	}
 	
+	@RequestMapping("/attainGroupUserMessageByHxID") //通过环信id获取群用户基本信息
+    public void attainGroupUserMessageByHxID(HttpServletRequest req,HttpServletResponse rep) throws Exception
+    {
+		String groupHXID=req.getParameter("groupHXID");
+		jsonMessage jm=dao.attainGroupUserMessageByHxIdDao(groupHXID);   	
+		deal(jm,rep);
+    }
+	
+	@RequestMapping("/attainMessageNum") //查询带查看的各消息的总条数
+	public void attainMessageNum(HttpServletRequest req,HttpServletResponse rep)throws Exception{
+		String userID=req.getParameter("userID");
+		jsonMessage jm=dao.attainMessageNumDao(userID);
+		deal(jm,rep);
+	}
+	
 	@RequestMapping("/attainEntryResult") //查询入群结果通知
 	public void attainEntryResult(HttpServletRequest req,HttpServletResponse rep)throws Exception{
 		String userID=req.getParameter("userID");
@@ -134,16 +199,34 @@ public class groupController {
 		deal(jm,rep);
 	}
 	
-	@RequestMapping("/attainEntryApplication") //查询入群申请通知
+	@RequestMapping("/attainEntryApplication") //群主查询入群申请通知
 	public void attainEntryApplication(HttpServletRequest req,HttpServletResponse rep)throws Exception{
 		String userID=req.getParameter("userID");
 		jsonMessage jm=dao.attainEntryApplicationDao(userID);
 		deal(jm,rep);
 	}
 	
+	@RequestMapping("/attainAddUser") //获取群主邀请入群请求
+	public void attainAddUser(HttpServletRequest req,HttpServletResponse rep)throws Exception{
+		String userID=req.getParameter("userID");
+		jsonMessage jm=dao.attainAddUserDao(userID);
+		deal(jm,rep);
+	}
+	
+	//获取特定群信息
+	@RequestMapping("/obtainOneGroupId")
+    public void obtainOneGroupId(HttpServletRequest req,HttpServletResponse rep) throws Exception
+    {
+    	String userID=req.getParameter("userID");
+    	String groupHXID=req.getParameter("groupHXID");
+		jsonMessage jm=dao.obtainOneGroupIdDao(userID,groupHXID);   	
+		deal(jm,rep);
+    }
+	
 	@RequestMapping("/attainSystem") //获取系统公告
 	public void attainSystem(HttpServletRequest req,HttpServletResponse rep)throws Exception{
-		jsonMessage jm=dao.attainSystemDao();
+		String userID=req.getParameter("userID");
+		jsonMessage jm=dao.attainSystemDao(userID);
 		deal(jm,rep);
 	}
 	
@@ -159,7 +242,7 @@ public class groupController {
 	
 	public void deal(jsonMessage jm,HttpServletResponse rep) throws Exception{
     	jsonOb=JSONObject.fromObject(jm); 
-    	System.out.println(jsonOb);
+    	//System.out.println(jsonOb);
     	rep.setCharacterEncoding("UTF-8");
 		rep.setContentType("application/json");	
     	PrintWriter writer = rep.getWriter();

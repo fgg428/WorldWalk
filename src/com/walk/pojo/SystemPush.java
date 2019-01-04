@@ -4,6 +4,7 @@ public class SystemPush {
 	String theme;
 	String content;
 	String date;
+	String status;
 	public String getTheme() {
 		return theme;
 	}
@@ -22,5 +23,10 @@ public class SystemPush {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

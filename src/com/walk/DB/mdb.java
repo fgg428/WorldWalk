@@ -6,9 +6,9 @@ import java.sql.DriverManager;
 public class mdb {
 	public static Connection getconntion()
 	{
-		String dbURL = "jdbc:mysql://localhost:3306/walk?characterEncoding=utf8";
+		String dbURL = "jdbc:mysql://172.17.144.10:3306/walk?characterEncoding=utf8";
 		String userName = "root";      
-		String userPwd = "123456";  
+		String userPwd = "123456";
 		Connection dbConn = null;		
 	    try 
 		{

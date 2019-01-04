@@ -15,6 +15,7 @@ public class Group extends UserInfor{
 	String groupAnnouncement;
 	String groupDescribe;
 	String status;
+	String groupHXID;
 	public int getGroupID() {
 		return groupID;
 	}
@@ -56,6 +57,12 @@ public class Group extends UserInfor{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getGroupHXID() {
+		return groupHXID;
+	}
+	public void setGroupHXID(String groupHXID) {
+		this.groupHXID = groupHXID;
 	}
 	
 }

@@ -32,6 +32,18 @@ public class userController {
 		deal(jm,rep);
     }
     
+    @RequestMapping("/attainUserInforByHX") //环信通过userName拿到个人信息
+    public void attainUserInforByHX(HttpServletRequest req,HttpServletResponse rep) throws Exception
+    {
+    	String userName=req.getParameter("userName");
+    	if((userName==null)|| (userName.equalsIgnoreCase(""))){
+    	}else {
+    		userName = new String(userName.getBytes("ISO8859-1"), "UTF-8"); 
+    	}
+		jsonMessage jm=dao.attainUserInforByHXDao(userName);   	
+		deal(jm,rep);
+    }
+    
     @RequestMapping("/register") //注册
     public void register(HttpServletRequest req,HttpServletResponse rep) throws Exception {
     	String userName=req.getParameter("userName");
@@ -77,21 +89,6 @@ public class userController {
 		deal(jm,rep);
     }
     
-//    @RequestMapping("/modifyUserData") //修改个人信息
-//    public void modifyUserData(HttpServletRequest req,HttpServletResponse rep) throws Exception{
-//    	String userID=req.getParameter("userID"); 
-//		String nickName=req.getParameter("nickName");
-//		if((nickName==null)|| (nickName.equalsIgnoreCase(""))){			
-//		}else {
-//			nickName = new String(nickName.getBytes("ISO8859-1"), "UTF-8"); 
-//			System.out.println(nickName);
-//		}
-//		String phone=req.getParameter("phone");	
-//		String sex=req.getParameter("sex");
-//		jsonMessage jm=dao.modifyUserDataDao(userID,nickName,phone,sex);
-//		deal(jm,rep);
-//    }
-    
     @RequestMapping("/modifyUserData") //修改个人信息
     public void modifyHeadimg(HttpServletRequest req,HttpServletResponse rep,@RequestParam("image") MultipartFile file) throws Exception{
     	req.setCharacterEncoding("utf-8");
@@ -107,8 +104,8 @@ public class userController {
 		}else {
 			sex = new String(sex.getBytes("ISO8859-1"), "UTF-8"); 
 		}
-    	String path="E:/eclipse workface/WorldWalk/WebContent/image/";
-    	jsonMessage jm=dao.modifyUserDataDao(userID,path,file,nickName,phone,sex);
+//    	String path="E:/eclipse.git/worldwalk/WorldWalk/WebContent/image/";
+    	jsonMessage jm=dao.modifyUserDataDao(userID,file,nickName,phone,sex);
     	deal(jm,rep);
     }
     
@@ -119,6 +116,17 @@ public class userController {
     	String Latitude=req.getParameter("Latitude");
     	String Direction=req.getParameter("Dircetion");
     	jsonMessage jm=dao.updateUserStateDao(userID,Longititude,Latitude,Direction);
+    	deal(jm,rep);
+    }
+    
+    @RequestMapping("/searchUser") //搜索用户
+    public void searchUser(HttpServletRequest req,HttpServletResponse rep)throws Exception{
+    	String key=req.getParameter("key");
+    	if((key==null)|| (key.equalsIgnoreCase(""))){			
+		}else {
+			key = new String(key.getBytes("ISO8859-1"), "UTF-8"); 
+		}
+    	jsonMessage jm=dao.searchUserDao(key);
     	deal(jm,rep);
     }
     
